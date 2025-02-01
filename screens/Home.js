@@ -44,49 +44,6 @@ const Home = ({ navigation }) => {
                     Examples
                 </Text>
 
-                <View
-                    style={[
-                        styles.box,
-                        {
-                            backgroundColor: colors.background,
-                            borderColor: colors.text,
-                            borderWidth: 1,
-                        },
-                    ]}
-                >
-                    <Text style={[styles.boxText, { color: colors.text }]}>
-                        "Explain quantum computings in simple terms"
-                    </Text>
-                </View>
-                <View
-                    style={[
-                        styles.box,
-                        {
-                            backgroundColor: colors.background,
-                            borderColor: colors.text,
-                            borderWidth: 1,
-                        },
-                    ]}
-                >
-                    <Text style={[styles.boxText, { color: colors.text }]}>
-                        "How To make an HTTP request in JavaScript ?"
-                    </Text>
-                </View>
-                <View
-                    style={[
-                        styles.box,
-                        {
-                            backgroundColor: colors.background,
-                            borderColor: colors.text,
-                            borderWidth: 1,
-                        },
-                    ]}
-                >
-                    <Text style={[styles.boxText, { color: colors.text }]}>
-                        "Got any creative ideas for a 10 year old's birthday"
-                    </Text>
-                </View>
-
                 <TouchableOpacity
                     style={styles.btn}
                     onPress={() => navigation.navigate('Chat')}

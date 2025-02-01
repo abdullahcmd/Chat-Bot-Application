@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, TextInput, Image, Alert } from 'react-native';
+import { View, TouchableOpacity, TextInput, Image, Alert,Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, SIZES, images } from '../constants';
 import { StatusBar } from 'expo-status-bar';
@@ -7,6 +7,8 @@ import { MaterialIcons, FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Bubble, GiftedChat } from 'react-native-gifted-chat';
 import { useTheme } from '../themes/ThemeProvider';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+
+const {width,height}=Dimensions.get('window');
 
 const Chat = ({ navigation }) => {
   const [inputMessage, setInputMessage] = useState('');
@@ -39,7 +41,7 @@ const Chat = ({ navigation }) => {
         history: [
           {
             role: 'user',
-            parts: [{ text: `You are an AI assistant expert in Nigerian farming and agriculture landscape. Your goal is to assist people in general and farmers in particular. Keep the answer detailed but simple.
+            parts: [{ text: `You are an AI assistant expert in Nigerian farming and agriculture landscape. Your goal is to assist people in general and farmers in particular. Keep the answer detailed but simple. 
 
               <query>Best dry season crops?</query>
               
@@ -66,9 +68,18 @@ const Chat = ({ navigation }) => {
 
       if (result?.response) {
         const responseText = await result.response?.text();
+
+//Cleaning the text 
+const cleanMarkdown = (text) => {
+  return text.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1'); // Removes ** and *
+};
+
+
+        const cleanedResponseText = cleanMarkdown(responseText.trim());
+        
         const responseMessage = {
           _id: Math.random().toString(36).substring(7),
-          text: responseText.trim(),
+          text: cleanedResponseText,
           createdAt: new Date(),
           user: { _id: 2, name: 'Gemini' },
         };
@@ -102,7 +113,7 @@ const Chat = ({ navigation }) => {
           <Bubble
             {...props}
             wrapperStyle={{
-              right: { backgroundColor: COLORS.primary },
+              right: { backgroundColor: 'black',margin: width*0.03,width:width*0.7},
             }}
             textStyle={{
               right: { color: COLORS.white },
