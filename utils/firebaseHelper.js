@@ -5,12 +5,12 @@ import { initializeApp } from 'firebase/app'
 
 export const getFirebaseApp = () => {
     const firebaseConfig = {
-        apiKey: 'AIzaSyBwYRO37_PzU_9Dks9iPL2xmFyJapGd-JY',
-        authDomain: 'chat-gpt-2-1629b.firebaseapp.com',
-        projectId: 'chat-gpt-2-1629b',
-        storageBucket: 'chat-gpt-2-1629b.appspot.com',
-        messagingSenderId: '1099289868444',
-        appId: '1:1099289868444:web:b70d2520a7fd20283f1559',
+        apiKey: "AIzaSyDSfLXQjkaFFwz41904WYbifrjvbBNOHEI",
+  authDomain: "chatgpt-b875b.firebaseapp.com",
+  projectId: "chatgpt-b875b",
+  storageBucket: "chatgpt-b875b.firebasestorage.app",
+  messagingSenderId: "408856187399",
+  appId: "1:408856187399:web:9368138281b8405cd090a2",
     }
 
     // Initialize Firebase

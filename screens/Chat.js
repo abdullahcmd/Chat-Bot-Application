@@ -1,314 +1,171 @@
-import { View, TouchableOpacity, TextInput, Image } from 'react-native'
-import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { COLORS, SIZES, images } from '../constants'
-import { StatusBar } from 'expo-status-bar'
-import { MaterialIcons, FontAwesome, Ionicons } from '@expo/vector-icons'
-import { Bubble, GiftedChat } from 'react-native-gifted-chat'
-import { useTheme } from '../themes/ThemeProvider'
+import React, { useState } from 'react';
+import { View, TouchableOpacity, TextInput, Image, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS, SIZES, images } from '../constants';
+import { StatusBar } from 'expo-status-bar';
+import { MaterialIcons, FontAwesome, Ionicons } from '@expo/vector-icons';
+import { Bubble, GiftedChat } from 'react-native-gifted-chat';
+import { useTheme } from '../themes/ThemeProvider';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Thanks for watching...
 const Chat = ({ navigation }) => {
-    const [inputMessage, setInputMessage] = useState('')
-    const [outputMessage, setOutputMessage] = useState(
-        'Results should be shown here.'
-    )
-    const [isTyping, setIsTyping] = useState(false)
+  const [inputMessage, setInputMessage] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [isTyping, setIsTyping] = useState(false);
+  const { colors } = useTheme();
+  const API_KEY = 'AIzaSyD0g08dv68lBc0u2Ie_dKUPfdpbZzPIszI'; // Replace with your actual API key
+  const genAI = new GoogleGenerativeAI(API_KEY);
 
-    const [messages, setMessages] = useState([])
-    const {colors } = useTheme()
+  // Handle Input Change
+  const handleInputText = (text) => {
+    setInputMessage(text);
+  };
 
-    const renderMessage = (props) => {
-        const { currentMessage } = props
+  // Generate Text Response with Gemini
+  const generateText = async () => {
+    try {
+      setIsTyping(true);
+      const message = {
+        _id: Math.random().toString(36).substring(7),
+        text: inputMessage,
+        createdAt: new Date(),
+        user: { _id: 1 },
+      };
 
-        if (currentMessage.user._id === 1) {
-            return (
-                <View
-                    style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'flex-end',
-                    }}
-                >
-                    <Bubble
-                        {...props}
-                        wrapperStyle={{
-                            right: {
-                                backgroundColor: COLORS.primary,
-                                marginRight: 12,
-                                marginVertical: 12,
-                            },
-                        }}
-                        textStyle={{
-                            right: {
-                                color: COLORS.white,
-                            },
-                        }}
-                    />
-                </View>
-            )
-        } else {
-            return (
-                <View
-                    style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                    }}
-                >
-                    <Image
-                        source={images.avatar}
-                        style={{
-                            height: 40,
-                            width: 40,
-                            borderRadius: 20,
-                            marginLeft: 8,
-                        }}
-                    />
-                    <Bubble
-                        {...props}
-                        wrapperStyle={{
-                            left: {
-                                backgroundColor: COLORS.secondaryWhite,
-                                marginLeft: 12,
-                            },
-                        }}
-                        textStyle={{
-                            left: {
-                                color: COLORS.black,
-                            },
-                        }}
-                    />
-                </View>
-            )
-        }
+      setMessages((previousMessages) => GiftedChat.append(previousMessages, [message]));
 
-        return <Bubble {...props} />
+      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+      const chat = model.startChat({
+        history: [
+          {
+            role: 'user',
+            parts: [{ text: `You are an AI assistant expert in Nigerian farming and agriculture landscape. Your goal is to assist people in general and farmers in particular. Keep the answer detailed but simple.
+
+              <query>Best dry season crops?</query>
+              
+              
+              <answer>In Nigeria, tomatoes (Kano, Kaduna), pepper (Sokoto, Jigawa), onions (Kebbi, Bauchi), cabbage (Jos Plateau), and watermelon (Borno, Bauchi) thrive with irrigation.</answer>
+              
+              <query>Fastest way to grow broilers?</query>
+              
+              <answer>In Nigeria, buy chicks from reputable hatcheries (Lagos, Oyo, Kano), provide good housing (ventilation in Sokoto, heat control in Jos), use quality feed (maize, soybean meal), and follow a strict vaccination schedule.</answer>
+              
+              <query>How to get a farm loan?</query>
+              <answer>Farmers in Nigeria can apply through BOA, NIRSAL (Anchor Borrowers' Program), or cooperative societies. Government grants like AGSMEIS and Youth Farmers Scheme also offer funding.</answer>
+              
+              <query>Best maize planting time?</query>
+              <answer>In Nigeria, plant maize between March-April (South), April-May (Middle Belt), and May-June (North). Irrigation farming allows year-round planting in states like Kano and Sokoto.</answer> `}],
+          },
+          {
+            role: 'model',
+            parts: [{ text: 'Understood. I will provide detailed but simple answers related to Nigerian farming and agriculture.' }],
+          },
+        ],
+      });
+      const result = await chat.sendMessage(inputMessage);
+
+      if (result?.response) {
+        const responseText = await result.response?.text();
+        const responseMessage = {
+          _id: Math.random().toString(36).substring(7),
+          text: responseText.trim(),
+          createdAt: new Date(),
+          user: { _id: 2, name: 'Gemini' },
+        };
+
+        setMessages((previousMessages) => GiftedChat.append(previousMessages, [responseMessage]));
+      } else {
+        console.error('Invalid response structure from API', result);
+      }
+    } catch (error) {
+      Alert.alert('Error', error.message || 'Failed to get a response from Gemini.');
+    } finally {
+      setInputMessage('');
+      setIsTyping(false);
     }
+  };
 
-    // Implementing chat generation using gpt-3.5-turbo model
-    const generateText = () => {
-        setIsTyping(true)
-        const message = {
-            _id: Math.random().toString(36).substring(7),
-            text: inputMessage,
-            createAt: new Date(),
-            user: { _id: 1 },
-        }
-
-        setMessages((previousMessage) =>
-            GiftedChat.append(previousMessage, [message])
-        )
-
-        /**
-         * Always put your api key in an environment file
-         */
-
-        fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer your_own_openai_api_key',
-            },
-            body: JSON.stringify({
-                model: 'gpt-3.5-turbo',
-                messages: [
-                    {
-                        role: 'user',
-                        content: inputMessage,
-                    },
-                ],
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data.choices[0].message.content)
-                setInputMessage('')
-                setOutputMessage(data.choices[0].message.content.trim())
-
-                const message = {
-                    _id: Math.random().toString(36).substring(7),
-                    text: data.choices[0].message.content.trim(),
-                    createAt: new Date(),
-                    user: { _id: 2, name: 'ChatGPT' },
-                }
-
-                setIsTyping(false)
-                setMessages((previousMessage) =>
-                    GiftedChat.append(previousMessage, [message])
-                )
-            })
+  // Submit Handler for Text Request
+  const submitHandler = () => {
+    if (inputMessage.trim()) {
+      generateText();
     }
+  };
 
-    // implementing images generations
-    const generateImages = () => {
-        setIsTyping(true)
-        const message = {
-            _id: Math.random().toString(36).substring(7),
-            text: inputMessage,
-            createdAt: new Date(),
-            user: { _id: 1 },
-        }
+  // Render Message
+  const renderMessage = (props) => {
+    const { currentMessage } = props;
 
-        setMessages((previousMessage) =>
-            GiftedChat.append(previousMessage, [message])
-        )
-
-        fetch('https://api.openai.com/v1/images/generations', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer your_own_openai_api_key',
-            },
-            body: JSON.stringify({
-                prompt: inputMessage,
-                n: 1,
-                size: '1024x1024',
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data.data[0].url)
-                setInputMessage('')
-                setOutputMessage(data.data[0].url)
-                setIsTyping(false)
-
-                data.data.forEach((item) => {
-                    const message = {
-                        _id: Math.random().toString(36).substring(7),
-                        text: 'Image',
-                        createdAt: new Date(),
-                        user: { _id: 2, name: 'ChatGPT' },
-                        image: item.url,
-                    }
-
-                    setMessages((previousMessage) =>
-                        GiftedChat.append(previousMessage, [message])
-                    )
-                })
-            })
-    }
-
-    const submitHandler = () => {
-        if (inputMessage.toLowerCase().startsWith('generate image')) {
-            generateImages()
-        } else {
-            generateText()
-        }
-    }
-
-    const handleInputText = (text) => {
-        setInputMessage(text)
-    }
-
-    return (
-        <SafeAreaView
-            style={{
-                flex: 1,
-                backgroundColor: colors.background,
+    if (currentMessage.user._id === 1) {
+      return (
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+          <Bubble
+            {...props}
+            wrapperStyle={{
+              right: { backgroundColor: COLORS.primary },
             }}
-        >
-            <StatusBar style="auto" />
-            <View
-                style={{
-                    height: 60,
-                    backgroundColor: colors.background,
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    flexDirection: 'row',
-                    paddingHorizontal: 22,
-                    width: SIZES.width,
-                    zIndex: 9999,
-                }}
-            >
-                <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                    style={{
-                        height: 40,
-                        width: 40,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <MaterialIcons
-                        name="keyboard-arrow-left"
-                        size={24}
-                        color={colors.text}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => console.log('Save chat')}>
-                    <Ionicons
-                        name="bookmark-outline"
-                        size={24}
-                        color={colors.text}
-                    />
-                </TouchableOpacity>
-            </View>
+            textStyle={{
+              right: { color: COLORS.white },
+            }}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+          <Image source={images.avatar} style={{ height: 40, width: 40, borderRadius: 20, marginLeft: 8 }} />
+          <Bubble
+            {...props}
+            wrapperStyle={{
+              left: { backgroundColor: COLORS.secondaryWhite },
+            }}
+            textStyle={{
+              left: { color: COLORS.black },
+            }}
+          />
+        </View>
+      );
+    }
+  };
 
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-                <GiftedChat
-                    messages={messages}
-                    renderInputToolbar={() => {}}
-                    user={{ _id: 1 }}
-                    minInputToolbarHeight={0}
-                    renderMessage={renderMessage}
-                    isTyping={isTyping}
-                />
-            </View>
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+      <StatusBar style="auto" />
 
-            <View
-                style={{
-                    flexDirection: 'row',
-                    backgroundColor: colors.background,
-                    paddingVertical: 8,
-                }}
-            >
-                <View
-                    style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        marginLeft: 10,
-                        backgroundColor: colors.background,
-                        paddingVertical: 8,
-                        marginHorizontal: 12,
-                        borderRadius: 12,
-                        borderColor: colors.text,
-                        borderWidth: .2
-                    }}
-                >
-                    <TextInput
-                        value={inputMessage}
-                        onChangeText={handleInputText}
-                        placeholder="Enter your question"
-                        placeholderTextColor={colors.text}
-                        style={{
-                            color: colors.text,
-                            flex: 1,
-                            paddingHorizontal: 10,
-                        }}
-                    />
+      {/* Header */}
+      <View style={{ height: 60, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 22 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <MaterialIcons name="keyboard-arrow-left" size={24} color={colors.text} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => console.log('Save chat')}>
+          <Ionicons name="bookmark-outline" size={24} color={colors.text} />
+        </TouchableOpacity>
+      </View>
 
-                    <TouchableOpacity
-                        onPress={submitHandler}
-                        style={{
-                            padding: 6,
-                            borderRadius: 8,
-                            marginHorizontal: 12,
-                        }}
-                    >
-                        <FontAwesome
-                            name="send-o"
-                            color={COLORS.primary}
-                            size={24}
-                        />
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </SafeAreaView>
-    )
-}
+      {/* Chat Messages */}
+      <GiftedChat
+        messages={messages}
+        renderMessage={renderMessage}
+        user={{ _id: 1 }}
+        isTyping={isTyping}
+        renderInputToolbar={() => {}}
+      />
 
-export default Chat
+      {/* Input Area */}
+      <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
+        <TextInput
+          value={inputMessage}
+          onChangeText={handleInputText}
+          placeholder="Enter your question"
+          placeholderTextColor={colors.text}
+          style={{ flex: 1, backgroundColor: colors.background, padding: 10, borderRadius: 12, borderWidth: 0.2, color: colors.text }}
+        />
+        <TouchableOpacity onPress={submitHandler} style={{ marginLeft: 10 }}>
+          <FontAwesome name="send-o" size={24} color={COLORS.primary} />
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+};
+
+export default Chat;
