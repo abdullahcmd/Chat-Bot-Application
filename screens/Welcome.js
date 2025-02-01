@@ -36,7 +36,7 @@ const Welcome = ({ navigation }) => {
                             marginVertical: 8,
                         }}
                     >
-                        Welcome to ChatGPT
+                        Welcome to FormerGist
                     </Text>
 
                     <Text

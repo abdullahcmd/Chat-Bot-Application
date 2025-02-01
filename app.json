@@ -1,15 +1,20 @@
 {
     "expo": {
-        "name": "ChatGPT",
-        "slug": "ChatGPT",
+        "name": "FormerGist",
+        "slug": "FormerGist",
+        "fonts": [
+            {
+              "RocaTwoBlack": "./assets/fonts/roca-two-black.ttf"
+            }
+          ],
         "version": "1.0.0",
         "orientation": "portrait",
-        "icon": "./assets/images/icon.png",
+        "icon": "./assets/images/logoicon.png",
         "userInterfaceStyle": "light",
         "splash": {
-            "image": "./assets/images/splash.png",
-            "resizeMode": "cover",
-            "backgroundColor": "#ffffff"
+            "image": "./assets/images/logoicon.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#000000"
         },
         "assetBundlePatterns": ["**/*"],
         "ios": {
