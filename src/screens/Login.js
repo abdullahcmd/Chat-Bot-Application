@@ -1,33 +1,30 @@
 import { View, Text, Image, Alert } from 'react-native'
 import React, { useCallback, useReducer, useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import PageContainer from '../components/PageContainer'
-import { FONTS, SIZES, images } from '../constants'
-import { COLORS } from '../constants'
-import Input from '../components/Input'
-import Button from '../components/Button'
-import { reducer } from '../utils/reducers/formReducers'
-import { validateInput } from '../utils/actions/formActions'
-import { getFirebaseApp } from '../utils/firebaseHelper'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
-import { ref, child, set, getDatabase } from 'firebase/database'
+import PageContainer from '../../components/PageContainer'
+import { FONTS, SIZES, images } from '../../constants'
+import { COLORS } from '../../constants'
+import Input from '../../components/Input'
+import Button from '../../components/Button'
+import { reducer } from '../../utils/reducers/formReducers'
+import { validateInput } from '../../utils/actions/formActions'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { getFirebaseApp } from '../../utils/firebaseHelper'
 import { useTheme } from '../themes/ThemeProvider'
 
 const initialState = {
     inputValues: {
-        fullName: '',
         email: '',
         password: '',
     },
     inputValidities: {
-        fullName: false,
         email: false,
         password: false,
     },
     formIsValid: false,
 }
 
-const Register = ({ navigation }) => {
+const Login = ({ navigation }) => {
     const [formState, dispatchFormState] = useReducer(reducer, initialState)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
@@ -41,50 +38,31 @@ const Register = ({ navigation }) => {
         [dispatchFormState]
     )
 
-    const createUser = async (fullName, email, userId) => {
-        const userData = {
-            fullName,
-            email,
-            userId,
-            signUpDate: new Date().toISOString(),
-        }
-
-        const dbRef = ref(getDatabase())
-        const childRef = child(dbRef, `users/${userId}`)
-        await set(childRef, userData)
-
-        return userData
-    }
-
-    const authHandler = async () => {
+    const loginHandler = async () => {
         const app = getFirebaseApp()
         const auth = getAuth(app)
         setIsLoading(true)
 
         try {
-            const result = await createUserWithEmailAndPassword(
+            const result = await signInWithEmailAndPassword(
                 auth,
                 formState.inputValues.email,
                 formState.inputValues.password
             )
 
-            const { uid } = result.user
-
-            const userData = await createUser(
-                formState.inputValues.fullName,
-                formState.inputValues.email,
-                uid
-            )
-
-            if (userData) {
+            if (result) {
                 setIsLoading(false)
-                navigation.navigate('Login')
+                navigation.navigate('BottomTabNavigation')
             }
         } catch (error) {
             const errorCode = error.code
-            let message = 'Something went wrong !'
-            if (errorCode === 'auth/email-already-in-use') {
-                message = 'This email is already in use'
+            let message = 'Something went wrong'
+
+            if (
+                errorCode === 'auth/wrong-password' ||
+                errorCode === 'auth/user-not-found'
+            ) {
+                message = 'Wrong email or password'
             }
 
             setError(message)
@@ -92,10 +70,10 @@ const Register = ({ navigation }) => {
         }
     }
 
-    // Display error if something went wrong
+    // handle errors
     useEffect(() => {
         if (error) {
-            Alert.alert('An error occured', error)
+            Alert.alert('An error occurred', error)
         }
     }, [error])
 
@@ -126,16 +104,8 @@ const Register = ({ navigation }) => {
                             marginVertical: 8,
                         }}
                     >
-                        Welcome Back!
+                        Login to your account
                     </Text>
-
-                    <Input
-                        onInputChanged={inputChangedHandler}
-                        errorText={formState.inputValidities['fullName']}
-                        id="fullName"
-                        placeholder="Enter your full name"
-                        placeholderTextColor={colors.text}
-                    />
 
                     <Input
                         onInputChanged={inputChangedHandler}
@@ -155,10 +125,10 @@ const Register = ({ navigation }) => {
                     />
 
                     <Button
-                        title="Register"
-                        onPress={authHandler}
-                        isLoading={isLoading}
+                        title="Login"
                         filled
+                        isLoading={isLoading}
+                        onPress={loginHandler}
                         style={{
                             width: SIZES.width - 44,
                             marginBottom: SIZES.padding,
@@ -171,4 +141,4 @@ const Register = ({ navigation }) => {
     )
 }
 
-export default Register
+export default Login

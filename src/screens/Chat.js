@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, TextInput, Image, Alert,Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS, SIZES, images } from '../constants';
+import { COLORS, SIZES, images } from '../../constants';
 import { StatusBar } from 'expo-status-bar';
 import { MaterialIcons, FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Bubble, GiftedChat } from 'react-native-gifted-chat';
