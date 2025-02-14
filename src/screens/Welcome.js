@@ -1,10 +1,10 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { COLORS, FONTS, SIZES, images } from '../../constants'
+import { COLORS, FONTS, SIZES, images } from '../constants'
 import { StatusBar } from 'expo-status-bar'
-import PageContainer from '../../components/PageContainer'
-import Button from '../../components/Button'
+import PageContainer from '../components/PageContainer'
+import Button from '../components/Button'
 import { useTheme } from "../themes/ThemeProvider"
 
 const Welcome = ({ navigation }) => {

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "408856187399",
+    "firebase_url": "https://chatgpt-b875b-default-rtdb.firebaseio.com",
+    "project_id": "chatgpt-b875b",
+    "storage_bucket": "chatgpt-b875b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408856187399:android:f3c565d61b383016d090a2",
+        "android_client_info": {
+          "package_name": "com.farmergift"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHofFwVAYciipLZtxkqbR_VFggRxjhHmg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

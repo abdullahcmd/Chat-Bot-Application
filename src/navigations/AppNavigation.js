@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { Welcome, Login, Register, Home, Chat } from '../src/screens'
+import { Welcome, Login, Register, Home, Chat } from '../screens'
 import { NavigationContainer } from '@react-navigation/native'
 import BottomTabNavigation from './BottomTabNavigation'
 
