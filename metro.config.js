@@ -1,11 +1,12 @@
-const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
+// Import Metro's recommended config
+const { getDefaultConfig } = require('@react-native/metro-config');
+// Import Reanimated Metro config
+const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro-config');
 
-/**
- * Metro configuration
- * https://reactnative.dev/docs/metro
- *
- * @type {import('@react-native/metro-config').MetroConfig}
- */
-const config = {};
+const defaultConfig = getDefaultConfig(__dirname);
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+// Ensure asset extensions are correctly handled
+defaultConfig.resolver.assetExts.push('ttf', 'png', 'jpg', 'jpeg', 'gif');
+
+// Apply Reanimated Metro config
+module.exports = wrapWithReanimatedMetroConfig(defaultConfig);

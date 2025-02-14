@@ -9,6 +9,8 @@ import Button from '../components/Button'
 import { reducer } from '../utils/reducers/formReducers'
 import { validateInput } from '../utils/actions/formActions'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import auth from '@react-native-firebase/auth'
+
 import { getFirebaseApp } from '../utils/firebaseHelper'
 import { useTheme } from '../themes/ThemeProvider'
 

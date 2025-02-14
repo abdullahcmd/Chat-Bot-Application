@@ -1,10 +1,12 @@
 import { View, Text, Platform } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Ionicons } from '@expo/vector-icons'
+import  Icon from 'react-native-vector-icons/Ionicons'
+
 import { COLORS } from '../constants'
 import { Home, Profile, Saved } from '../screens'
 import { useTheme } from '../themes/ThemeProvider'
+import { NavigationContainer } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator()
 
@@ -12,6 +14,7 @@ const Tab = createBottomTabNavigator()
 const BottomTabNavigation = () => {
     const { colors } = useTheme()
     return (
+       
         <Tab.Navigator screenOptions={{
             tabBarShowLabel: false,
             headerShown: false,
@@ -31,7 +34,7 @@ const BottomTabNavigation = () => {
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <Ionicons
+                          <Icon
                                 name="chatbubble-ellipses-outline"
                                 size={24}
                                 color={
@@ -65,7 +68,7 @@ const BottomTabNavigation = () => {
                                     borderColor: COLORS.white,
                                 }}
                             >
-                                <Ionicons
+                                <Icon
                                     name="bookmark-outline"
                                     size={24}
                                     color={COLORS.white}
@@ -82,7 +85,7 @@ const BottomTabNavigation = () => {
                 options={{
                     tabBarIcon: ({ focused }) => {
                         return (
-                            <Ionicons
+                            <Icon
                                 name="ios-person-outline"
                                 size={24}
                                 color={
@@ -96,6 +99,7 @@ const BottomTabNavigation = () => {
                 }}
             />
         </Tab.Navigator>
+       
     )
 }
 

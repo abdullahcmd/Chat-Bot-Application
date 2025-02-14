@@ -2,7 +2,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, FONTS, SIZES } from '../constants'
-import { Ionicons, AntDesign } from '@expo/vector-icons'
+import { Ionicons, AntDesign } from 'react-native-vector-icons'
+import  Icon from 'react-native-vector-icons/Ionicons'
 import { useTheme } from '../themes/ThemeProvider'
 
 const Home = ({ navigation }) => {
@@ -26,7 +27,7 @@ const Home = ({ navigation }) => {
                 <TouchableOpacity
                  onPress={ToggleTheme}
                 >
-                    <Ionicons
+                  <Icon
                         name={ dark ? 'sunny-outline': "partly-sunny-sharp"}
                         size={32}
                         color={dark ? COLORS.white: COLORS.black}
@@ -48,7 +49,7 @@ const Home = ({ navigation }) => {
                     style={styles.btn}
                     onPress={() => navigation.navigate('Chat')}
                 >
-                    <AntDesign name="plus" size={24} color={COLORS.white} />
+                  {/*<AntDesign name="plus" size={24} color={COLORS.white} />*/}
                     <Text style={styles.btnText}>New Chat</Text>
                 </TouchableOpacity>
             </View>

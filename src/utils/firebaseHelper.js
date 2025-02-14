@@ -5,7 +5,7 @@ import { initializeApp } from 'firebase/app'
 
 export const getFirebaseApp = () => {
     const firebaseConfig = {
-        apiKey: "AIzaSyDSfLXQjkaFFwz41904WYbifrjvbBNOHEI",
+        apiKey: "AIzaSyAHofFwVAYciipLZtxkqbR_VFggRxjhHmg",
   authDomain: "chatgpt-b875b.firebaseapp.com",
   projectId: "chatgpt-b875b",
   storageBucket: "chatgpt-b875b.firebasestorage.app",
