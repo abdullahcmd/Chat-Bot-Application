@@ -5,10 +5,10 @@ import {width, height} from '../constants/wid_height';
 const SplashScreen = () => {
   return (
     <View style={styles.container}>
-      {/*<Image
+      <Image
         style={styles.splashlogo}
         source={require('../assets/images/logoicon.png')}
-      />*/}
+      />
     </View>
   );
 };

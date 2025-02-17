@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, TextInput, Image, Alert,Dimensions } from 'react-native';
+import { View,TouchableOpacity,ScrollView, TextInput, Image, Alert,Dimensions, KeyboardAvoidingView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, SIZES, images } from '../constants';
 import  Icon from 'react-native-vector-icons/Ionicons'
@@ -139,7 +139,9 @@ const cleanMarkdown = (text) => {
   };
 
   return (
+   
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+      
       {/* Header */}
       <View style={{ height: 60, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 22 }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -153,6 +155,7 @@ const cleanMarkdown = (text) => {
       </View>
 
       {/* Chat Messages */}
+      
       <GiftedChat
         messages={messages}
         renderMessage={renderMessage}
@@ -162,7 +165,10 @@ const cleanMarkdown = (text) => {
       />
 
       {/* Input Area */}
+
+      
       <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
+      
         <TextInput
           value={inputMessage}
           onChangeText={handleInputText}
@@ -170,10 +176,13 @@ const cleanMarkdown = (text) => {
           placeholderTextColor={colors.text}
           style={{ flex: 1, backgroundColor: colors.background, padding: 10, borderRadius: 12, borderWidth: 0.2, color: colors.text }}
         />
+       
         <TouchableOpacity onPress={submitHandler} style={{ marginLeft: 10 }}>
           <Icon name={"send-outline"} size={24} color={COLORS.primary} />
         </TouchableOpacity>
+        
       </View>
+     
     </SafeAreaView>
   );
 };

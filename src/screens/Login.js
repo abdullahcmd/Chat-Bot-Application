@@ -8,7 +8,6 @@ import Button from '../components/Button'
 import { reducer } from '../utils/reducers/formReducers'
 import { validateInput } from '../utils/actions/formActions'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import auth from '@react-native-firebase/auth'
 
 import { getFirebaseApp } from '../utils/firebaseHelper'
 import { useTheme } from '../themes/ThemeProvider'
@@ -53,7 +52,7 @@ const Login = ({ navigation }) => {
 
             if (result) {
                 setIsLoading(false)
-                navigation.navigate('BottomTabNavigation')
+                navigation.navigate('Home')
             }
         } catch (error) {
             const errorCode = error.code
@@ -97,7 +96,15 @@ const Login = ({ navigation }) => {
                             marginBottom: 22,
                         }}
                     />
-
+<Text
+                        style={{
+                            ...FONTS.h4,
+                            color: colors.text,
+                            marginVertical: 8,
+                        }}
+                    >
+                        Welcome Back
+                    </Text>
                     <Text
                         style={{
                             ...FONTS.h4,

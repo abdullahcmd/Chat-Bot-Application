@@ -35,7 +35,7 @@ const Welcome = ({ navigation }) => {
                             marginVertical: 8,
                         }}
                     >
-                        Welcome to FormerGist
+                        Welcome to Farmer Gist
                     </Text>
 
                     <Text

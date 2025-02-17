@@ -3,7 +3,6 @@ import React, { useCallback, useReducer, useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import PageContainer from '../components/PageContainer'
 import { FONTS, SIZES, images } from '../constants'
-import { COLORS } from '../../constants'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import { reducer } from '../utils/reducers/formReducers'
@@ -126,7 +125,7 @@ const Register = ({ navigation }) => {
                             marginVertical: 8,
                         }}
                     >
-                        Welcome Back!
+                        Welcome !
                     </Text>
 
                     <Input
