@@ -8,6 +8,7 @@ import { useTheme } from '../themes/ThemeProvider';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import  'react-native-reanimated';
 const {width,height}=Dimensions.get('window');
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const Chat = ({ navigation }) => {
   const [inputMessage, setInputMessage] = useState('');
@@ -141,7 +142,10 @@ const cleanMarkdown = (text) => {
   return (
    
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+
       
+
       {/* Header */}
       <View style={{ height: 60, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 22 }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -163,26 +167,26 @@ const cleanMarkdown = (text) => {
         isTyping={isTyping}
         renderInputToolbar={() => {}}
       />
-
+    
       {/* Input Area */}
 
-      
+     
       <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}>
-      
+     
         <TextInput
           value={inputMessage}
           onChangeText={handleInputText}
           placeholder="Enter your question"
           placeholderTextColor={colors.text}
-          style={{ flex: 1, backgroundColor: colors.background, padding: 10, borderRadius: 12, borderWidth: 0.2, color: colors.text }}
+          style={{ flex:1, backgroundColor: colors.background, padding: 10, borderRadius: 12, borderWidth: 0.2, color: colors.text }}
         />
-       
+      
         <TouchableOpacity onPress={submitHandler} style={{ marginLeft: 10 }}>
           <Icon name={"send-outline"} size={24} color={COLORS.primary} />
         </TouchableOpacity>
         
       </View>
-     
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
