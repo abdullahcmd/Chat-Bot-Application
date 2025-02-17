@@ -42,7 +42,7 @@ const Home = ({ navigation }) => {
                         },
                     ]}
                 >
-                    Examples
+                Best AI Agent for farming help.
                 </Text>
 
                 <TouchableOpacity

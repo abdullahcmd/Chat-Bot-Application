@@ -142,9 +142,9 @@ const cleanMarkdown = (text) => {
   return (
    
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={30} style={{ flex: 1 }} >
 
-      
+      <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}  >
 
       {/* Header */}
       <View style={{ height: 60, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 22 }}>
@@ -167,7 +167,7 @@ const cleanMarkdown = (text) => {
         isTyping={isTyping}
         renderInputToolbar={() => {}}
       />
-    
+      </KeyboardAwareScrollView>
       {/* Input Area */}
 
      
