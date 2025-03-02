@@ -5,6 +5,7 @@ import { COLORS, FONTS, SIZES } from '../constants'
 import { Ionicons, AntDesign } from 'react-native-vector-icons'
 import  Icon from 'react-native-vector-icons/Ionicons'
 import { useTheme } from '../themes/ThemeProvider'
+import { width } from '../constants/wid_height'
 
 const Home = ({ navigation }) => {
 
@@ -89,7 +90,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         backgroundColor: COLORS.primary,
-        width: 300,
+        width: width*0.8,
+        borderRadius:5,
         paddingVertical: SIZES.padding * 2,
     },
     btnText: {
