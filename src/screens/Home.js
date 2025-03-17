@@ -1,12 +1,12 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { COLORS, FONTS, SIZES } from '../constants'
 import { Ionicons, AntDesign } from 'react-native-vector-icons'
 import  Icon from 'react-native-vector-icons/Ionicons'
 import { useTheme } from '../themes/ThemeProvider'
-import { width } from '../constants/wid_height'
-
+import { width,height } from '../constants/wid_height'
+import LoginButton from '../components/login/button';
 const Home = ({ navigation }) => {
 
     const { dark, colors, setScheme } = useTheme();
@@ -25,15 +25,24 @@ const Home = ({ navigation }) => {
             ]}
         >
             <View style={styles.center}>
-                <TouchableOpacity
-                 onPress={ToggleTheme}
-                >
-                  <Icon
-                        name={ dark ? 'sunny-outline': "partly-sunny-sharp"}
-                        size={32}
-                        color={dark ? COLORS.white: COLORS.black}
-                    />
-                </TouchableOpacity>
+               
+                <Image
+            source={require('../assets/images/BlackLogo.png')}
+            style={{
+              height: height * 0.1,
+              width: width * 0.3,
+            }}
+          />
+
+          <Text
+            style={{
+              fontSize: 25,
+              fontWeight: 'bold',
+              color: colors.text,
+              marginVertical: 8,
+            }}>
+           FarmerGist
+          </Text>
 
                 <Text
                     style={[

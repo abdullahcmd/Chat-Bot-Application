@@ -38,7 +38,7 @@ const Welcome = ({ navigation }) => {
                               style={{
                                   fontSize: 15,
                                   fontWeight:'600',
-                               
+                               textAlign: 'center',
                                 marginVertical: height * 0.01,
                                 
                               }}>

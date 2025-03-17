@@ -4,6 +4,7 @@ import {width, height} from '../constants/wid_height';
 
 const SplashScreen = () => {
   return (
+    <View style={{flex: 1, backgroundColor: '#f5f5f5'}}>
     <View style={styles.container}>
      <Image
                  source={require('../assets/images/BlackLogo.png')}
@@ -26,6 +27,7 @@ const SplashScreen = () => {
                          </Text>
      
       
+    </View>
     </View>
   );
 };

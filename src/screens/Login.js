@@ -115,6 +115,7 @@ const Login = ({navigation}) => {
             style={{
                 fontSize: 15,
                 fontWeight:'600',
+                textAlign: 'center',
               color: colors.text,
               marginVertical: 8,
             }}>
