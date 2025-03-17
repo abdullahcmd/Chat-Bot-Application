@@ -13,161 +13,161 @@ import { ref, child, set, getDatabase } from 'firebase/database'
 import { useTheme } from '../themes/ThemeProvider'
 
 const initialState = {
-    inputValues: {
-        fullName: '',
-        email: '',
-        password: '',
-    },
-    inputValidities: {
-        fullName: false,
-        email: false,
-        password: false,
-    },
-    formIsValid: false,
+  inputValues: {
+    fullName: '',
+    email: '',
+    password: '',
+  },
+  inputValidities: {
+    fullName: false,
+    email: false,
+    password: false,
+  },
+  formIsValid: false,
 }
 
 const Register = ({ navigation }) => {
-    const [formState, dispatchFormState] = useReducer(reducer, initialState)
-    const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState(null)
-    const { colors } = useTheme()
+  const [formState, dispatchFormState] = useReducer(reducer, initialState)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const { colors } = useTheme()
 
-    const inputChangedHandler = useCallback(
-        (inputId, inputValue) => {
-            const result = validateInput(inputId, inputValue)
-            dispatchFormState({ inputId, validationResult: result, inputValue })
-        },
-        [dispatchFormState]
-    )
+  const inputChangedHandler = useCallback(
+    (inputId, inputValue) => {
+      const result = validateInput(inputId, inputValue)
+      dispatchFormState({ inputId, validationResult: result, inputValue })
+    },
+    [dispatchFormState]
+  )
 
-    const createUser = async (fullName, email, userId) => {
-        const userData = {
-            fullName,
-            email,
-            userId,
-            signUpDate: new Date().toISOString(),
-        }
-
-        const dbRef = ref(getDatabase())
-        const childRef = child(dbRef, `users/${userId}`)
-        await set(childRef, userData)
-
-        return userData
+  const createUser = async (fullName, email, userId) => {
+    const userData = {
+      fullName,
+      email,
+      userId,
+      signUpDate: new Date().toISOString(),
     }
 
-    const authHandler = async () => {
-        const app = getFirebaseApp()
-        const auth = getAuth(app)
-        setIsLoading(true)
+    const dbRef = ref(getDatabase())
+    const childRef = child(dbRef, `users/${userId}`)
+    await set(childRef, userData)
 
-        try {
-            const result = await createUserWithEmailAndPassword(
-                auth,
-                formState.inputValues.email,
-                formState.inputValues.password
-            )
+    return userData
+  }
 
-            const { uid } = result.user
+  const authHandler = async () => {
+    const app = getFirebaseApp()
+    const auth = getAuth(app)
+    setIsLoading(true)
+    setError(null) // Clear any previous errors
 
-            const userData = await createUser(
-                formState.inputValues.fullName,
-                formState.inputValues.email,
-                uid
-            )
+    try {
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        formState.inputValues.email,
+        formState.inputValues.password
+      )
 
-            if (userData) {
-                setIsLoading(false)
-                navigation.navigate('Login')
-            }
-        } catch (error) {
-            const errorCode = error.code
-            let message = 'Something went wrong !'
-            if (errorCode === 'auth/email-already-in-use') {
-                message = 'This email is already in use'
-            }
+      const { uid } = result.user
 
-            setError(message)
-            setIsLoading(false)
-        }
+      const userData = await createUser(
+        formState.inputValues.fullName,
+        formState.inputValues.email,
+        uid
+      )
+
+      if (userData) {
+        setError(null) // Ensure error is cleared on success
+        setIsLoading(false)
+        navigation.navigate('Login')
+      }
+    } catch (error) {
+      const errorCode = error.code
+      let message = 'Something went wrong !'
+      if (errorCode === 'auth/email-already-in-use') {
+        message = 'This email is already in use'
+      }
+      setError(message)
+      setIsLoading(false)
     }
+  }
 
-    // Display error if something went wrong
-    useEffect(() => {
-        if (error) {
-            Alert.alert('An error occured', error)
-        }
-    }, [error])
+  useEffect(() => {
+    if (error) {
+      Alert.alert('An error occurred', error)
+    }
+  }, [error])
 
-    return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
-            <PageContainer>
-                <View
-                    style={{
-                        flex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginHorizontal: 22,
-                    }}
-                >
-                    <Image
-                        source={images.logo}
-                        style={{
-                            height: 120,
-                            width: 120,
-                            marginBottom: 22,
-                        }}
-                    />
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+      <PageContainer>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginHorizontal: 22,
+          }}
+        >
+          <Image
+            source={images.logo}
+            style={{
+              height: 120,
+              width: 120,
+              marginBottom: 22,
+            }}
+          />
 
-                    <Text
-                        style={{
-                            ...FONTS.h4,
-                            color: colors.text,
-                            marginVertical: 8,
-                        }}
-                    >
-                        Welcome !
-                    </Text>
+          <Text
+            style={{
+              ...FONTS.h4,
+              color: colors.text,
+              marginVertical: 8,
+            }}
+          >
+            Welcome !
+          </Text>
 
-                    <Input
-                        onInputChanged={inputChangedHandler}
-                        errorText={formState.inputValidities['fullName']}
-                        id="fullName"
-                        placeholder="Enter your full name"
-                        placeholderTextColor={colors.text}
-                    />
+          <Input
+            onInputChanged={inputChangedHandler}
+            errorText={formState.inputValidities['fullName']}
+            id="fullName"
+            placeholder="Enter your full name"
+            placeholderTextColor={colors.text}
+          />
 
-                    <Input
-                        onInputChanged={inputChangedHandler}
-                        errorText={formState.inputValidities['email']}
-                        id="email"
-                        placeholder="Enter your email"
-                        placeholderTextColor={colors.text}
-                    />
+          <Input
+            onInputChanged={inputChangedHandler}
+            errorText={formState.inputValidities['email']}
+            id="email"
+            placeholder="Enter your email"
+            placeholderTextColor={colors.text}
+          />
 
-                    <Input
-                        onInputChanged={inputChangedHandler}
-                        errorText={formState.inputValidities['password']}
-                        id="password"
-                        placeholder="Enter your password"
-                        placeholderTextColor={colors.text}
-                        secureTextEntry
-                    />
+          <Input
+            onInputChanged={inputChangedHandler}
+            errorText={formState.inputValidities['password']}
+            id="password"
+            placeholder="Enter your password"
+            placeholderTextColor={colors.text}
+            secureTextEntry
+          />
 
-                    <Button
-                        title="Register"
-                        onPress={authHandler}
-                        isLoading={isLoading}
-                        filled
-                        style={{
-                            width: SIZES.width - 44,
-                            marginBottom: SIZES.padding,
-                            marginVertical: 8,
-                        }}
-                    />
-                </View>
-            </PageContainer>
-        </SafeAreaView>
-    )
+          <Button
+            title="Register"
+            onPress={authHandler}
+            isLoading={isLoading}
+            filled
+            style={{
+              width: SIZES.width - 44,
+              marginBottom: SIZES.padding,
+              marginVertical: 8,
+            }}
+          />
+        </View>
+      </PageContainer>
+    </SafeAreaView>
+  )
 }
 
 export default Register
