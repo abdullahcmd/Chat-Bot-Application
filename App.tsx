@@ -12,10 +12,10 @@ function App(): React.JSX.Element {
     setSplash(false)
 ,2000);
 
+
   return (
     
- <>{splash ?<SplashScreen /> : <AppNavigation/>}</>
- 
+      <>{splash ?<SplashScreen /> : <AppNavigation/>}</>
   );
 }
 

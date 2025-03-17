@@ -32,7 +32,7 @@ const Button = (props) => {
                 <Text
                     style={{
                         ...FONTS.body2,
-                        ...{ color: textColor },
+                        ...{ color: "black" }, fontWeight:'700',
                     }}
                 >
                     {props.title}
