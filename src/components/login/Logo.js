@@ -16,10 +16,11 @@ const UpdatedInput = ({
       <TextInput
         style={styles.input}
         selectionColor="black"
+        
         // Wrap the callback to pass both id and text
         onChangeText={(text) => onInputChanged(id, text)}
         placeholder={placeholderText}
-        placeholderTextColor={placeholderTextColor}
+        placeholderTextColor="#9c9a9a"
       />
       <Icon style={styles.logo} name={IconName} size={25} color="black" />
     </View>

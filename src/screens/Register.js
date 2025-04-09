@@ -1,17 +1,20 @@
-import { View, Text, Image, Alert, StyleSheet } from 'react-native'
-import React, { useCallback, useReducer, useState, useEffect } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import PageContainer from '../components/PageContainer'
-import { reducer } from '../utils/reducers/formReducers'
-import { validateInput } from '../utils/actions/formActions'
-import { getFirebaseApp } from '../utils/firebaseHelper'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
-import { ref, child, set, getDatabase } from 'firebase/database'
-import { useTheme } from '../themes/ThemeProvider'
+import {View, Text, Image, Alert, StyleSheet,TouchableOpacity} from 'react-native';
+import React, {useCallback, useReducer, useState, useEffect} from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import { COLORS } from '../constants';
+import Arrow from '../components/login/arrow';
+import PageContainer from '../components/PageContainer';
+import {reducer} from '../utils/reducers/formReducers';
+import {validateInput} from '../utils/actions/formActions';
+import {getFirebaseApp} from '../utils/firebaseHelper';
+import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
+import {ref, child, set, getDatabase} from 'firebase/database';
+import {useTheme} from '../themes/ThemeProvider';
 import {height, width} from '../constants/wid_height';
 import UpdatedInput from '../components/login/Logo';
 import LoginButton from '../components/login/button';
-
+import { ScrollView } from 'react-native';
 
 const initialState = {
   inputValues: {
@@ -25,21 +28,36 @@ const initialState = {
     password: false,
   },
   formIsValid: false,
-}
+};
 
-const Register = ({ navigation }) => {
-  const [formState, dispatchFormState] = useReducer(reducer, initialState)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const { colors } = useTheme()
 
+// Custom checkbox component
+const CustomCheckbox = ({isChecked, onToggle}) => {
+  return (
+    <TouchableOpacity style={[checkboxStyles.container,]} onPress={() => onToggle(!isChecked)}>
+      <View style={[checkboxStyles.checkbox, isChecked && checkboxStyles.checked]}>
+        {isChecked && <Icon name="check" style={checkboxStyles.checkmark} />}
+      </View>
+      <Text style={checkboxStyles.label}>By signing up, you agree to our Terms of Conditions and Privacy of Policy</Text>
+    </TouchableOpacity>
+  );
+};
+
+
+
+const Register = ({navigation}) => {
+  const [formState, dispatchFormState] = useReducer(reducer, initialState);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const {colors} = useTheme();
+ const [rememberMe, setRememberMe] = useState(false);
   const inputChangedHandler = useCallback(
     (inputId, inputValue) => {
-      const result = validateInput(inputId, inputValue)
-      dispatchFormState({ inputId, validationResult: result, inputValue })
+      const result = validateInput(inputId, inputValue);
+      dispatchFormState({inputId, validationResult: result, inputValue});
     },
-    [dispatchFormState]
-  )
+    [dispatchFormState],
+  );
 
   const createUser = async (fullName, email, userId) => {
     const userData = {
@@ -47,99 +65,100 @@ const Register = ({ navigation }) => {
       email,
       userId,
       signUpDate: new Date().toISOString(),
-    }
+    };
 
-    const dbRef = ref(getDatabase())
-    const childRef = child(dbRef, `users/${userId}`)
-    await set(childRef, userData)
+    const dbRef = ref(getDatabase());
+    const childRef = child(dbRef, `users/${userId}`);
+    await set(childRef, userData);
 
-    return userData
-  }
+    return userData;
+  };
 
   const authHandler = async () => {
-    const app = getFirebaseApp()
-    const auth = getAuth(app)
-    setIsLoading(true)
-    setError(null) // Clear any previous errors
+    const app = getFirebaseApp();
+    const auth = getAuth(app);
+    setIsLoading(true);
+    setError(null); // Clear any previous errors
 
     try {
       const result = await createUserWithEmailAndPassword(
         auth,
         formState.inputValues.email,
-        formState.inputValues.password
-      )
+        formState.inputValues.password,
+      );
 
-      const { uid } = result.user
+      const {uid} = result.user;
 
       const userData = await createUser(
         formState.inputValues.fullName,
         formState.inputValues.email,
-        uid
-      )
+        uid,
+      );
 
       if (userData) {
-        setError(null) // Ensure error is cleared on success
-        setIsLoading(false)
-        navigation.navigate('Login')
+        setError(null); // Ensure error is cleared on success
+        setIsLoading(false);
+        navigation.navigate('Login');
       }
     } catch (error) {
-      const errorCode = error.code
-      let message = 'Something went wrong !'
+      const errorCode = error.code;
+      let message = 'Something went wrong !';
       if (errorCode === 'auth/email-already-in-use') {
-        message = 'This email is already in use'
+        message = 'This email is already in use';
       }
-      setError(message)
-      setIsLoading(false)
+      setError(message);
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     if (error) {
-      Alert.alert('An error occurred', error)
+      Alert.alert('An error occurred', error);
     }
-  }, [error])
+  }, [error]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
-      <PageContainer>
-        <View
+ 
+    
+        <ScrollView
+        contentContainerStyle={{alignItems: 'center',
+          justifyContent: 'center'}}
           style={{
             flex: 1,
-            backgroundColor: "#f5f5f5",
-            alignItems: 'center',
-            justifyContent: 'center',
-           
-          }}
-        >
+            backgroundColor: '#f5f5f5',
+          }}>
+            <Arrow navigation={navigation}/>
           <Image
-                       source={require('../assets/images/BlackLogo.png')}
-
-                       style={{
-                        height: height * 0.1,
-                        width: width * 0.3,
-                      }}
-          />
- <Text style={styles.LogoHeading}>FarmerGist</Text>
-         <Text
-                    style={{
-                      fontSize: 25,
-                      fontWeight: 'bold',
-                      color: colors.text,
-                      marginVertical: 8,
-                    }}>
-                    Let's Get Started !
-                  </Text>
-  <Text
+            source={require('../assets/images/New.png')}
             style={{
-                fontSize: 15,
-                fontWeight:'600',
+              marginTop:height*0.1,
+              height: height * 0.2,
+              width: width * 0.5,
+            }}
+          />
+
+          <Text
+            style={{
+              fontSize: 25,
+              fontWeight: '400',
               color: colors.text,
-              width:width*0.9,
-              textAlign:'center',
-              padding:width*0.02,
-          margin: 8,
+              
             }}>
-            SignUp to get help with easy tips, simple questions and farming advices.
+            Let's Get Started !
+          </Text>
+          <Text
+            style={{
+              fontSize: 11,
+              fontWeight: '600',
+              color: colors.text,
+              width: width * 0.9,
+              textAlign: 'center',
+              padding: width * 0.02,
+              marginBottom:height*0.03
+             
+            }}>
+            Sign up to get help with easy tips, simple questions and farming
+            advice.
           </Text>
           <UpdatedInput
             onInputChanged={inputChangedHandler}
@@ -147,7 +166,6 @@ const Register = ({ navigation }) => {
             id="fullName"
             IconName={'user-o'}
             placeholderText="Enter your full name"
-            placeholderTextColor={colors.text}
           />
 
           <UpdatedInput
@@ -156,7 +174,6 @@ const Register = ({ navigation }) => {
             id="email"
             IconName={'envelope-o'}
             placeholderText="Enter your email"
-            placeholderTextColor={colors.text}
           />
 
           <UpdatedInput
@@ -168,22 +185,27 @@ const Register = ({ navigation }) => {
             placeholderTextColor={colors.text}
             secureTextEntry
           />
-
+ <CustomCheckbox  isChecked={rememberMe} onToggle={setRememberMe} />
           <LoginButton
-            text="Register"
+            text="Sign up"
             onPress={authHandler}
             isLoading={isLoading}
           />
-        </View>
-      </PageContainer>
-    </SafeAreaView>
-  )
-}
+          <Text style={{fontWeight: '500', fontSize: 11}}>
+                      Already have an account?{' '}
+                      <Text
+                        onPress={() => navigation.navigate('Login')}
+                        style={{color: colors.primary, fontWeight: 'bold', fontSize: 11}}>
+                        Sign in Now
+                      </Text>
+                    </Text>
+        </ScrollView>
+      
+   
+  );
+};
 
-export default Register
-
-
-
+export default Register;
 
 const styles = StyleSheet.create({
   input: {
@@ -196,5 +218,40 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     marginBottom: height * 0.01,
+  },
+});
+
+const checkboxStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+   alignItems:'center',
+  marginRight:width*0.08,
+  marginVertical:height*0.02,
+     justifyContent:'center',
+    //marginVertical: 12,
+   
+  },
+  checkbox: {
+    height: height * 0.027,
+    width: width * 0.05,
+    borderWidth: 1.5,
+    borderColor: '#000',
+    marginLeft: width * 0.1,
+    
+    justifyContent: 'center',
+    marginRight: width * 0.02,
+  }, checkmark: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  checked: {
+    backgroundColor: COLORS.primary,
+   
+  },
+ 
+  label: {
+    fontSize: 10,
+    color: '#333',
+    width:width*0.77,
   },
 });
