@@ -1,28 +1,25 @@
 import React from 'react';
-import { View, StyleSheet, TextInput } from 'react-native';
-import { height, width } from '../../constants/wid_height';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {View, StyleSheet, TextInput} from 'react-native';
+import {height, width} from '../../constants/wid_height';
 
-const UpdatedInput = ({ 
-  placeholderText, 
-  onInputChanged, 
-  errorText, 
-  id, 
-  placeholderTextColor, 
-  IconName 
+const UpdatedInput = ({
+  placeholderText,
+  onInputChanged,
+  errorText,
+  id,
+  placeholderTextColor,
+  IconName,
 }) => {
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
         selectionColor="black"
-        
         // Wrap the callback to pass both id and text
-        onChangeText={(text) => onInputChanged(id, text)}
+        onChangeText={text => onInputChanged(id, text)}
         placeholder={placeholderText}
         placeholderTextColor="#9c9a9a"
       />
-      <Icon style={styles.logo} name={IconName} size={25} color="black" />
     </View>
   );
 };
@@ -47,7 +44,7 @@ const styles = StyleSheet.create({
   logo: {
     alignSelf: 'center',
     paddingRight: width * 0.04,
-  }
+  },
 });
 
 export default UpdatedInput;

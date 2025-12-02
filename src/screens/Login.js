@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import PageContainer from '../components/PageContainer';
 import {reducer} from '../utils/reducers/formReducers';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {validateInput} from '../utils/actions/formActions';
@@ -105,76 +104,72 @@ const Login = ({navigation}) => {
   }, [error]);
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
-      <PageContainer>
-        <View
+    <SafeAreaView style={{flex: 1, backgroundColor: '#f5f5f5'}}>
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Arrow navigation={navigation} />
+        <Image
+          source={require('../assets/images/New.png')}
           style={{
-            flex: 1,
-            backgroundColor: '#f5f5f5',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Arrow navigation={navigation} />
-          <Image
-            source={require('../assets/images/New.png')}
-            style={{
-              height: height * 0.2,
-              width: width * 0.5,
-            }}
-          />
+            resizeMode: 'contain',
+            height: height * 0.2,
+            width: width * 0.5,
+          }}
+        />
 
+        <Text
+          style={{
+            fontSize: 25,
+            fontWeight: '400',
+            color: colors.text,
+          }}>
+          Welcome Back!
+        </Text>
+        <Text
+          style={{
+            fontSize: 11,
+            fontWeight: '600',
+            color: colors.text,
+            width: width * 0.9,
+            textAlign: 'center',
+            padding: width * 0.02,
+          }}>
+          Login to get the best farming tips and support!
+        </Text>
+        <UpdatedInput
+          onInputChanged={inputChangedHandler}
+          errorText={formState.inputValidities['email']}
+          id="email"
+          placeholderText="Email Address"
+          IconName={'envelope-o'}
+        />
+        <UpdatedInput
+          onInputChanged={inputChangedHandler}
+          errorText={formState.inputValidities['password']}
+          id="password"
+          IconName={'eye-slash'}
+          style={styles.input}
+          placeholderText="Password"
+          secureTextEntry
+        />
+        {/* Custom "Remember me" checkbox */}
+        <LoginButton
+          text={'Sign in'}
+          isLoading={isLoading}
+          onPress={loginHandler}
+        />
+        <Text style={{fontWeight: '500', fontSize: 11}}>
+          Don't have an account?{' '}
           <Text
-            style={{
-              fontSize: 25,
-              fontWeight: '400',
-              color: colors.text,
-            }}>
-            Welcome Back!
+            onPress={() => navigation.navigate('Register')}
+            style={{color: colors.primary, fontWeight: 'bold', fontSize: 11}}>
+            Sign up now
           </Text>
-          <Text
-            style={{
-              fontSize: 11,
-              fontWeight: '600',
-              color: colors.text,
-              width: width * 0.9,
-              textAlign: 'center',
-              padding: width * 0.02,
-            }}>
-            Login to get the best farming tips and support!
-          </Text>
-          <UpdatedInput
-            onInputChanged={inputChangedHandler}
-            errorText={formState.inputValidities['email']}
-            id="email"
-            placeholderText="Email Address"
-            IconName={'envelope-o'}
-          />
-          <UpdatedInput
-            onInputChanged={inputChangedHandler}
-            errorText={formState.inputValidities['password']}
-            id="password"
-            IconName={'eye-slash'}
-            style={styles.input}
-            placeholderText="Password"
-            secureTextEntry
-          />
-          {/* Custom "Remember me" checkbox */}
-          <CustomCheckbox isChecked={rememberMe} onToggle={setRememberMe} />
-          <LoginButton
-            text={'Sign in'}
-            isLoading={isLoading}
-            onPress={loginHandler}
-          />
-          <Text style={{fontWeight: '500', fontSize: 11}}>
-            Don't have an account?{' '}
-            <Text
-              onPress={() => navigation.navigate('Register')}
-              style={{color: colors.primary, fontWeight: 'bold', fontSize: 11}}>
-              Sign up now
-            </Text>
-          </Text>
-        </View>
-      </PageContainer>
+        </Text>
+      </View>
     </SafeAreaView>
   );
 };

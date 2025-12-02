@@ -29,7 +29,7 @@ const Chat = ({navigation}) => {
   const [showPromptSuggestions, setShowPromptSuggestions] = useState(false);
 
   const {colors} = useTheme();
-  const API_KEY = 'AIzaSyD0g08dv68lBc0u2Ie_dKUPfdpbZzPIszI'; // Replace with your actual API key
+  const API_KEY = 'AIzaSyDz-koXlrsjHwnrPiXKiSYYo5AxPC3OY7s'; // Replace with your actual API key
   const genAI = new GoogleGenerativeAI(API_KEY);
 
   // Handle Input Change
@@ -54,7 +54,7 @@ const Chat = ({navigation}) => {
         GiftedChat.append(previousMessages, [userMessage]),
       );
 
-      const model = genAI.getGenerativeModel({model: 'gemini-1.5-flash'});
+      const model = genAI.getGenerativeModel({model: 'gemini-2.0-flash'});
       const chat = model.startChat({
         history: [
           {
@@ -62,15 +62,15 @@ const Chat = ({navigation}) => {
             parts: [
               {
                 text:
-                  'You are an AI assistant expert in Nigerian farming and agriculture landscape. Your goal is to assist people in general and farmers in particular. Keep the answer detailed but simple. \n\n' +
+                  'You are an AI assistant expert in Pakistan farming and agriculture landscape. Your goal is to assist people in general and farmers in particular. Keep the answer detailed but simple. \n\n' +
                   '<query>Best dry season crops?</query>\n\n' +
-                  '<answer>In Nigeria, tomatoes (Kano, Kaduna), pepper (Sokoto, Jigawa), onions (Kebbi, Bauchi), cabbage (Jos Plateau), and watermelon (Borno, Bauchi) thrive with irrigation.</answer>\n\n' +
+                  '<answer>In Pakistan, tomatoes (Kano, Kaduna), pepper (Sokoto, Jigawa), onions (Kebbi, Bauchi), cabbage (Jos Plateau), and watermelon (Borno, Bauchi) thrive with irrigation.</answer>\n\n' +
                   '<query>Fastest way to grow broilers?</query>\n\n' +
-                  '<answer>In Nigeria, buy chicks from reputable hatcheries (Lagos, Oyo, Kano), provide good housing (ventilation in Sokoto, heat control in Jos), use quality feed (maize, soybean meal), and follow a strict vaccination schedule.</answer>\n\n' +
+                  '<answer>In Pakistan, buy chicks from reputable hatcheries (Lagos, Oyo, Kano), provide good housing (ventilation in Sokoto, heat control in Jos), use quality feed (maize, soybean meal), and follow a strict vaccination schedule.</answer>\n\n' +
                   '<query>How to get a farm loan?</query>\n' +
-                  "<answer>Farmers in Nigeria can apply through BOA, NIRSAL (Anchor Borrowers' Program), or cooperative societies. Government grants like AGSMEIS and Youth Farmers Scheme also offer funding.</answer>\n\n" +
+                  "<answer>Farmers in Pakistan can apply through BOA, NIRSAL (Anchor Borrowers' Program), or cooperative societies. Government grants like AGSMEIS and Youth Farmers Scheme also offer funding.</answer>\n\n" +
                   '<query>Best maize planting time?</query>\n' +
-                  '<answer>In Nigeria, plant maize between March-April (South), April-May (Middle Belt), and May-June (North). Irrigation farming allows year-round planting in states like Kano and Sokoto.</answer>',
+                  '<answer>In Pakistan, plant maize between March-April (South), April-May (Middle Belt), and May-June (North). Irrigation farming allows year-round planting in states like Kano and Sokoto.</answer>',
               },
             ],
           },
@@ -206,12 +206,11 @@ const Chat = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#f5f5f5'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#f5f5f5'}}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={30}
-        style={{flex: 1}}
-        >
+        style={{flex: 1}}>
         {/* Header */}
         <View
           style={{
@@ -240,115 +239,114 @@ const Chat = ({navigation}) => {
         {/* Initial Prompts as Overlay */}
         {showInitialPrompts && (
           <ScrollView>
-          <View
-            style={{
-              backgroundColor: '#f5f5f5',
-            // marginTop: height * 0.1,
-              alignItems: 'center',
-            }}>
-            <Image
-              source={require('../assets/images/BlackLogo.png')}
+            <View
               style={{
-                height: height * 0.2,
-                width: width * 0.6,
-              }}
-            />
-            <Text
-              style={{
-                fontSize: 25,
-                fontWeight: '800',
-                color: colors.text,
-                
+                backgroundColor: '#f5f5f5',
+                // marginTop: height * 0.1,
+                alignItems: 'center',
               }}>
-              Hello !
-            </Text>
-            <Text
-              style={{
-                fontSize: 15,
-                fontWeight: '600',
-                width: width * 0.8,
-                padding: height * 0.02,
-                textAlign: 'center',
-                color: '#BFBFBF',
-             
-              }}>
+              <Image
+                source={require('../assets/images/BlackLogo.png')}
+                style={{
+                  height: height * 0.2,
+                  width: width * 0.6,
+                }}
+              />
+              <Text
+                style={{
+                  fontSize: 25,
+                  fontWeight: '800',
+                  color: colors.text,
+                }}>
+                Hello !
+              </Text>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: '600',
+                  width: width * 0.8,
+                  padding: height * 0.02,
+                  textAlign: 'center',
+                  color: '#BFBFBF',
+                }}>
                 Welcome to the new chat! {`\n`}
                 {`\n`}
-             Have a question? {`\n`}
-              FarmerGist is here to help. {`\n`}Ask away using text
-              ⌨️, voice 💬 or images 📷…
-            </Text>
-            <Text style={{ fontSize: 18,
-                fontWeight: '600',
-                
-                width: width * 0.8,
-                padding: height * 0.02,
-                textAlign: 'center',
-                color: '#BFBFBF',
-               marginTop:height * 0.1,}}>
-              Suggestions for you
-            </Text>
-            {/* Horizontal Scrollable Prompts */}
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{paddingHorizontal: width * 0.05}}>
-              <TouchableOpacity
+                Have a question? {`\n`}
+                FarmerGist is here to help. {`\n`}Ask away using text ⌨️, voice
+                💬 or images 📷…
+              </Text>
+              <Text
                 style={{
-                  backgroundColor: 'white',
-                 
-                  
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  height: height * 0.06,
+                  fontSize: 18,
+                  fontWeight: '600',
+
                   width: width * 0.8,
-                  margin: height * 0.01,
-                  borderRadius: 20,
-                }}
-                onPress={() => handlePrompt('Use Sri Method?')}>
-                <Text
+                  padding: height * 0.02,
+                  textAlign: 'center',
+                  color: '#BFBFBF',
+                  marginTop: height * 0.1,
+                }}>
+                Suggestions for you
+              </Text>
+              {/* Horizontal Scrollable Prompts */}
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{paddingHorizontal: width * 0.05}}>
+                <TouchableOpacity
                   style={{
-                    color: '#3f3f40',
-                    width: '80%',
-                    fontSize: 17,
-                    padding: width * 0.02,
-                    marginLeft: width * 0.03,
-                    fontWeight: '500',
-                  }}>
-                  Use Sri Method?
-                </Text>
-                <Send style={{marginRight: width * 0.05}} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: 'white',
-                 
-                  
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  height: height * 0.06,
-                  width: width * 0.8,
-                  margin: height * 0.01,
-                  borderRadius: 20,
-                }}
-                onPress={() => handlePrompt('Crops for this season')}>
-                <Text
+                    backgroundColor: 'white',
+
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    height: height * 0.06,
+                    width: width * 0.8,
+                    margin: height * 0.01,
+                    borderRadius: 20,
+                  }}
+                  onPress={() => handlePrompt('Use Sri Method?')}>
+                  <Text
+                    style={{
+                      color: '#3f3f40',
+                      width: '80%',
+                      fontSize: 17,
+                      padding: width * 0.02,
+                      marginLeft: width * 0.03,
+                      fontWeight: '500',
+                    }}>
+                    Use Sri Method?
+                  </Text>
+                  <Send style={{marginRight: width * 0.05}} />
+                </TouchableOpacity>
+                <TouchableOpacity
                   style={{
-                    color: '#3f3f40',
-                    width: '80%',
-                    fontSize: 17,
-                    padding: width * 0.02,
-                    marginLeft: width * 0.03,
-                    fontWeight: '500',
-                  }}>
-                  Crops for this season
-                </Text>
-                <Send style={{marginRight: width * 0.05}} />
-              </TouchableOpacity>
-            </ScrollView>
-          </View>
+                    backgroundColor: 'white',
+
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    height: height * 0.06,
+                    width: width * 0.8,
+                    margin: height * 0.01,
+                    borderRadius: 20,
+                  }}
+                  onPress={() => handlePrompt('Crops for this season')}>
+                  <Text
+                    style={{
+                      color: '#3f3f40',
+                      width: '80%',
+                      fontSize: 17,
+                      padding: width * 0.02,
+                      marginLeft: width * 0.03,
+                      fontWeight: '500',
+                    }}>
+                    Crops for this season
+                  </Text>
+                  <Send style={{marginRight: width * 0.05}} />
+                </TouchableOpacity>
+              </ScrollView>
+            </View>
           </ScrollView>
         )}
 
@@ -357,7 +355,6 @@ const Chat = ({navigation}) => {
           messages={messages}
           renderMessage={renderMessage}
           user={{_id: 1}}
-          
           renderTime={renderTime}
           isTyping={isTyping}
           renderInputToolbar={() => {}}
@@ -368,145 +365,145 @@ const Chat = ({navigation}) => {
 
         {/* Prompt Suggestions (shown after each response) */}
         {!showInitialPrompts && showPromptSuggestions && (
-          <ScrollView  style={{height:height*0.2}} >
-          <View
-            style={{
-              flexDirection: 'column',
-              justifyContent: 'space-around',
-              backgroundColor: '#f5f5f5',
-              padding: 10,
-            }}>
+          <ScrollView style={{height: height * 0.2}}>
             <View
               style={{
-                height: height * 0.001,
-                width: '95%',
-                backgroundColor: '#b9babd',
-                alignSelf: 'center',
-              }}
-            />
-            <Text
-              style={{
-                fontSize: 12,
-                textAlign: 'center',
-                fontWeight: 'bold',
-                margin: width * 0.02,
-                color: '#b9babd',
+                flexDirection: 'column',
+                justifyContent: 'space-around',
+                backgroundColor: '#f5f5f5',
+                padding: 10,
               }}>
-              Tap to ask follow up questions
-            </Text>
-            <TouchableOpacity
-              onPress={() =>
-                handlePrompt('What are some good cover crops for sandy soil?')
-              }
-              style={{
-                backgroundColor: 'white',
-                borderWidth: 2,
-                borderColor: '#4c4c4d',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                margin: height * 0.01,
-                borderRadius: 10,
-              }}>
+              <View
+                style={{
+                  height: height * 0.001,
+                  width: '95%',
+                  backgroundColor: '#b9babd',
+                  alignSelf: 'center',
+                }}
+              />
               <Text
                 style={{
-                  color: 'black',
-                  width: '80%',
                   fontSize: 12,
-                  padding: width * 0.02,
-                  marginLeft: width * 0.03,
-                  fontWeight: '500',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  margin: width * 0.02,
+                  color: '#b9babd',
                 }}>
-                What are some good cover crops for sandy soil?
+                Tap to ask follow up questions
               </Text>
-              <Send style={{marginRight: width * 0.05}} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                handlePrompt(
-                  'How often should I water sandy soil to keep it moist?',
-                )
-              }
-              style={{
-                backgroundColor: 'white',
-                borderWidth: 2,
-                borderColor: '#4c4c4d',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                margin: height * 0.01,
-                borderRadius: 10,
-              }}>
-              <Text
+              <TouchableOpacity
+                onPress={() =>
+                  handlePrompt('What are some good cover crops for sandy soil?')
+                }
                 style={{
-                  color: 'black',
-                  width: '80%',
-                  fontSize: 12,
-                  padding: width * 0.02,
-                  marginLeft: width * 0.03,
-                  fontWeight: '500',
+                  backgroundColor: 'white',
+                  borderWidth: 2,
+                  borderColor: '#4c4c4d',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  margin: height * 0.01,
+                  borderRadius: 10,
                 }}>
-                How often should I water sandy soil to keep it moist?
-              </Text>
-              <Send style={{marginRight: width * 0.05}} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                handlePrompt('What are some good cover crops for sandy soil?')
-              }
-              style={{
-                backgroundColor: 'white',
-                borderWidth: 2,
-                borderColor: '#4c4c4d',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                margin: height * 0.01,
-                borderRadius: 10,
-              }}>
-              <Text
+                <Text
+                  style={{
+                    color: 'black',
+                    width: '80%',
+                    fontSize: 12,
+                    padding: width * 0.02,
+                    marginLeft: width * 0.03,
+                    fontWeight: '500',
+                  }}>
+                  What are some good cover crops for sandy soil?
+                </Text>
+                <Send style={{marginRight: width * 0.05}} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  handlePrompt(
+                    'How often should I water sandy soil to keep it moist?',
+                  )
+                }
                 style={{
-                  color: 'black',
-                  width: '80%',
-                  fontSize: 12,
-                  padding: width * 0.02,
-                  marginLeft: width * 0.03,
-                  fontWeight: '500',
+                  backgroundColor: 'white',
+                  borderWidth: 2,
+                  borderColor: '#4c4c4d',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  margin: height * 0.01,
+                  borderRadius: 10,
                 }}>
-                What are some good cover crops for sandy soil?
-              </Text>
-              <Send style={{marginRight: width * 0.05}} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                handlePrompt(
-                  'How often should I water sandy soil to keep it moist?',
-                )
-              }
-              style={{
-                backgroundColor: 'white',
-                borderWidth: 2,
-                borderColor: '#4c4c4d',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                margin: height * 0.01,
-                borderRadius: 10,
-              }}>
-              <Text
+                <Text
+                  style={{
+                    color: 'black',
+                    width: '80%',
+                    fontSize: 12,
+                    padding: width * 0.02,
+                    marginLeft: width * 0.03,
+                    fontWeight: '500',
+                  }}>
+                  How often should I water sandy soil to keep it moist?
+                </Text>
+                <Send style={{marginRight: width * 0.05}} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  handlePrompt('What are some good cover crops for sandy soil?')
+                }
                 style={{
-                  color: 'black',
-                  width: '80%',
-                  fontSize: 12,
-                  padding: width * 0.02,
-                  marginLeft: width * 0.03,
-                  fontWeight: '500',
+                  backgroundColor: 'white',
+                  borderWidth: 2,
+                  borderColor: '#4c4c4d',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  margin: height * 0.01,
+                  borderRadius: 10,
                 }}>
-                How often should I water sandy soil to keep it moist?
-              </Text>
-              <Send style={{marginRight: width * 0.05}} />
-            </TouchableOpacity>
-          </View>
+                <Text
+                  style={{
+                    color: 'black',
+                    width: '80%',
+                    fontSize: 12,
+                    padding: width * 0.02,
+                    marginLeft: width * 0.03,
+                    fontWeight: '500',
+                  }}>
+                  What are some good cover crops for sandy soil?
+                </Text>
+                <Send style={{marginRight: width * 0.05}} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  handlePrompt(
+                    'How often should I water sandy soil to keep it moist?',
+                  )
+                }
+                style={{
+                  backgroundColor: 'white',
+                  borderWidth: 2,
+                  borderColor: '#4c4c4d',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  margin: height * 0.01,
+                  borderRadius: 10,
+                }}>
+                <Text
+                  style={{
+                    color: 'black',
+                    width: '80%',
+                    fontSize: 12,
+                    padding: width * 0.02,
+                    marginLeft: width * 0.03,
+                    fontWeight: '500',
+                  }}>
+                  How often should I water sandy soil to keep it moist?
+                </Text>
+                <Send style={{marginRight: width * 0.05}} />
+              </TouchableOpacity>
+            </View>
           </ScrollView>
         )}
 
@@ -549,7 +546,7 @@ const Chat = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 };
 
