@@ -9,6 +9,7 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   ScrollView,
+  Platform,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLORS, images} from '../constants';
@@ -29,7 +30,7 @@ const Chat = ({navigation}) => {
   const [showPromptSuggestions, setShowPromptSuggestions] = useState(false);
 
   const {colors} = useTheme();
-  const API_KEY = 'AIzaSyDz-koXlrsjHwnrPiXKiSYYo5AxPC3OY7s'; // Replace with your actual API key
+  // const API_KEY = 'AIzaSyBil8uIfOxic4lLK0X6B2aUeyIxCsvzCF0'; // Replace with your actual API key
   const genAI = new GoogleGenerativeAI(API_KEY);
 
   // Handle Input Change
@@ -54,7 +55,7 @@ const Chat = ({navigation}) => {
         GiftedChat.append(previousMessages, [userMessage]),
       );
 
-      const model = genAI.getGenerativeModel({model: 'gemini-2.0-flash'});
+      const model = genAI.getGenerativeModel({model: 'gemini-2.5-flash'});
       const chat = model.startChat({
         history: [
           {
@@ -62,7 +63,7 @@ const Chat = ({navigation}) => {
             parts: [
               {
                 text:
-                  'You are an AI assistant expert in Pakistan farming and agriculture landscape. Your goal is to assist people in general and farmers in particular. Keep the answer detailed but simple. \n\n' +
+                  'You are an AI assistant expert in Pakistan farming and agriculture landscape. Your goal is to assist people in general and farmers in particular.Always reply in urdu. Keep the answer detailed but simple. \n\n' +
                   '<query>Best dry season crops?</query>\n\n' +
                   '<answer>In Pakistan, tomatoes (Kano, Kaduna), pepper (Sokoto, Jigawa), onions (Kebbi, Bauchi), cabbage (Jos Plateau), and watermelon (Borno, Bauchi) thrive with irrigation.</answer>\n\n' +
                   '<query>Fastest way to grow broilers?</query>\n\n' +
@@ -78,7 +79,7 @@ const Chat = ({navigation}) => {
             role: 'model',
             parts: [
               {
-                text: 'Understood. I will provide detailed but simple answers related to Nigerian farming and agriculture.',
+                text: 'Understood. I will provide detailed but simple answers related to Pakistani farming and agriculture.',
               },
             ],
           },
@@ -363,7 +364,7 @@ const Chat = ({navigation}) => {
           }}
         />
 
-        {/* Prompt Suggestions (shown after each response) */}
+        {/* Prompt Suggestions (shown after each response)
         {!showInitialPrompts && showPromptSuggestions && (
           <ScrollView style={{height: height * 0.2}}>
             <View
@@ -505,7 +506,7 @@ const Chat = ({navigation}) => {
               </TouchableOpacity>
             </View>
           </ScrollView>
-        )}
+        )} */}
 
         {/* Input Area */}
         <View

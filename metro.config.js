@@ -1,5 +1,6 @@
 // metro.config.js
-const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
+const { getDefaultConfig } = require('expo/metro-config');
+const { mergeConfig } = require('@react-native/metro-config');
 const reanimated = require('react-native-reanimated/metro-config');
 
 const defaultConfig = getDefaultConfig(__dirname);
